@@ -6,9 +6,8 @@ public class servidor {
     public static void main(String[] args) {
 
         Javalin app = Javalin.create(config -> {
-            config.staticFiles.add("C:/Users/Starlin/Proyectos DEV/Interfaz de cobrador de servicios", Location.EXTERNAL);
             config.bundledPlugins.enableCors(cors -> cors.addRule(it -> it.anyHost()));
-        }).start(7070);
+        }).start(8080);
 
         app.post("/api/calcular", ctx -> {
             DatosEntrada entrada = ctx.bodyAsClass(DatosEntrada.class);
