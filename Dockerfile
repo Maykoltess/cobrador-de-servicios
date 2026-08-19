@@ -4,8 +4,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN javac src/servidor.java || javac servidor.java
+# Compila todos los .java en src usando los JARs que encuentre en el proyecto
+RUN javac -cp ".:lib/*:.idea/libraries/*" src/*.java -d bin/ || javac -cp "." src/*.java -d bin/
 
 EXPOSE 8080
 
-CMD ["java", "-cp", "src:.", "servidor"]
+CMD ["java", "-cp", "bin:lib/*:.idea/libraries/*", "servidor"]
