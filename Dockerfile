@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN javac servidor.java
+RUN javac src/servidor.java || javac servidor.java
 
 EXPOSE 8080
 
-CMD ["java", "servidor"]
+CMD ["java", "-cp", "src:.", "servidor"]
