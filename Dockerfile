@@ -1,21 +1,14 @@
-# Etapa 1: Compilar y empacar la app usando Maven
-FROM maven:3.9-eclipse-temurin-17 AS build
+FROM eclipse-temurin:17-jdk
+
 WORKDIR /app
 
-# Copiar el pom.xml y el código fuente
-COPY pom.xml .
-COPY src ./src
+# Copia todos los archivos del repositorio
+COPY . .
 
-# Compilar el proyecto y generar el archivo .jar
-RUN mvn clean package -DskipTests
-
-# Etapa 2: Imagen liviana para ejecutar la aplicación
-FROM eclipse-temurin:17-jre
-WORKDIR /app
-
-# Copiar el JAR generado desde la etapa de build
-COPY --from=build /app/target/*.jar app.jar
+# Crea la carpeta bin y compila los archivos dentro de src/cobrador/
+RUN mkdir -p bin && javac -cp ".idea/libraries/*:lib/*" -d bin src/cobrador/*.java
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+# Ejecuta la clase principal del paquete
+CMD ["java", "-cp", "bin:.idea/libraries/*:lib/*", "cobrador.servidor"]
